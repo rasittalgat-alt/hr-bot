@@ -2,6 +2,20 @@
 
 Система автоматизации HR-процессов на базе [n8n](https://n8n.io). Состоит из двух связанных воркфлоу: Telegram-бот для кандидатов и AI-агент для обработки резюме.
 
+## Скриншоты
+
+### Telegram-бот (точка входа для кандидатов)
+![Диалог в Telegram](images/dialog.png)
+
+### Воркфлоу обработки заявок в n8n
+![Воркфлоу HR Form](images/workflow_form.png)
+
+### Воркфлоу Telegram-бота в n8n
+![Воркфлоу Telegram Bot](images/workflow_bot.png)
+
+### Кандидаты в Google Sheets
+![Google Sheets](images/sheets.png)
+
 ## Как устроена система
 
 ```
