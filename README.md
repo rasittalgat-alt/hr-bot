@@ -1,3 +1,100 @@
+# 🤝 HR Bot — Recruitment Automation (Telegram + n8n Form)
+
+An HR process automation system built on [n8n](https://n8n.io). Consists of two connected workflows: a Telegram bot for candidates and an AI agent that processes resumes.
+
+## Screenshots
+
+### Candidate conversation in Telegram
+![Dialog 1](images/dialog1.png)
+![Dialog 2](images/dialog2.png)
+
+### Application form
+![Form](images/form.png)
+
+### Workflow in n8n
+![Workflow](images/workflow.png)
+
+### Candidates in Google Sheets
+![Google Sheets](images/sheets.png)
+
+## How the System Works
+
+```
+Candidate messages the Telegram bot
+        │
+        ▼
+[Telegram HR Bot] — validates the request and sends a form link
+        │
+        ▼
+Candidate fills in the form (name, resume, details)
+        │
+        ▼
+[HR Bot] — processes the application:
+        ├─ AI agent analyzes the resume (Gemini / Ollama)
+        ├─ Resume is uploaded to Google Drive
+        ├─ Candidate data is saved to Google Sheets
+        ├─ Email notification sent to HR manager via Gmail
+        └─ Telegram notification sent to HR team
+```
+
+## Workflows
+
+### 1. `workflow_telegram_bot.json` — Telegram HR Bot
+Entry point for candidates. Receives a Telegram message, validates the request type, and sends a personalized application form link.
+
+| Node | Purpose |
+|------|---------|
+| Telegram Trigger | Receives messages from candidates |
+| If / If1 | Checks request type |
+| Build Form URL | Generates form link with parameters |
+| Send a text message | Sends reply / form link to candidate |
+
+### 2. `workflow_hr_form.json` — HR Form Processor
+Core application processing workflow. Triggered when a candidate submits the form.
+
+| Node | Purpose |
+|------|---------|
+| On form submission | Receives form data |
+| AI Agent | Analyzes candidate's resume |
+| Google Gemini / Ollama | LLM models for analysis |
+| Structured Output Parser | Structures AI output |
+| Upload file (Google Drive) | Saves resume to Drive |
+| Append row in sheet | Logs candidate to Google Sheets |
+| Send a message (Gmail) | Sends email to HR manager |
+| Send a text message (Telegram) | Notifies HR team in Telegram |
+
+## Tech Stack
+
+| Component | Technology |
+|-----------|-----------|
+| Automation | n8n |
+| Messaging | Telegram Bot API |
+| AI model | Google Gemini / Ollama |
+| File storage | Google Drive |
+| Candidate database | Google Sheets |
+| Email notifications | Gmail |
+
+## Setup
+
+1. **Import both workflows** — start with `workflow_hr_form.json`, then `workflow_telegram_bot.json`
+2. **Configure credentials:**
+   - Telegram Bot token
+   - Google Gemini API key (or local Ollama)
+   - Google Drive, Google Sheets, Gmail — via OAuth2
+3. **Copy the form URL** from `On form submission` node and paste it into `Build Form URL` in the Telegram bot
+4. **Update parameters:**
+   - Google Sheets ID in `Append row` nodes
+   - Google Drive folder ID in `Upload file` node
+   - HR manager email in `Send a message` node
+   - HR team chat ID in Telegram node
+5. **Activate both workflows**
+
+## Author
+
+[Talgat Rashit](https://github.com/rasittalgat-alt)
+
+---
+
 # 🤝 HR-бот — Автоматизация найма (Telegram + n8n Form)
 
 Система автоматизации HR-процессов на базе [n8n](https://n8n.io). Состоит из двух связанных воркфлоу: Telegram-бот для кандидатов и AI-агент для обработки резюме.
@@ -42,7 +139,6 @@
 ### 1. `workflow_telegram_bot.json` — Telegram HR Bot
 Точка входа для кандидатов. Получает сообщение в Telegram, проверяет тип запроса и отправляет персонализированную ссылку на форму подачи заявки.
 
-**Узлы:**
 | Узел | Назначение |
 |------|------------|
 | Telegram Trigger | Получает сообщения от кандидатов |
@@ -53,7 +149,6 @@
 ### 2. `workflow_hr_form.json` — HR Bot (RU)
 Основной воркфлоу обработки заявок. Запускается при отправке формы кандидатом.
 
-**Узлы:**
 | Узел | Назначение |
 |------|------------|
 | On form submission | Получает данные из формы |
