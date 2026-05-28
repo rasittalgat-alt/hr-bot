@@ -5,16 +5,16 @@
 ## Скриншоты
 
 ### Telegram-бот (точка входа для кандидатов)
-![Диалог в Telegram](images/dialog.png)
+<!-- Загрузи скриншот через GitHub UI и вставь ссылку сюда -->
 
 ### Воркфлоу обработки заявок в n8n
-![Воркфлоу HR Form](images/workflow_form.png)
+<!-- Загрузи скриншот через GitHub UI и вставь ссылку сюда -->
 
 ### Воркфлоу Telegram-бота в n8n
-![Воркфлоу Telegram Bot](images/workflow_bot.png)
+<!-- Загрузи скриншот через GitHub UI и вставь ссылку сюда -->
 
 ### Кандидаты в Google Sheets
-![Google Sheets](images/sheets.png)
+<!-- Загрузи скриншот через GitHub UI и вставь ссылку сюда -->
 
 ## Как устроена система
 
