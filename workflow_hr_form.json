@@ -1,0 +1,761 @@
+﻿{
+    "settings":  {
+                     "executionOrder":  "v1",
+                     "binaryMode":  "separate",
+                     "availableInMCP":  false,
+                     "timeSavedMode":  "fixed",
+                     "callerPolicy":  "workflowsFromSameOwner"
+                 },
+    "tags":  [
+
+             ],
+    "name":  "HR bot (RU)",
+    "connections":  {
+                        "On form submission":  {
+                                                   "main":  [
+                                                                [
+                                                                    {
+                                                                        "node":  "Send a text message",
+                                                                        "type":  "main",
+                                                                        "index":  0
+                                                                    },
+                                                                    {
+                                                                        "node":  "Merge",
+                                                                        "type":  "main",
+                                                                        "index":  1
+                                                                    }
+                                                                ]
+                                                            ]
+                                               },
+                        "AI Agent":  {
+                                         "main":  [
+                                                      [
+                                                          {
+                                                              "node":  "Append or update row in sheet",
+                                                              "type":  "main",
+                                                              "index":  0
+                                                          }
+                                                      ]
+                                                  ]
+                                     },
+                        "Upload file":  {
+                                            "main":  [
+                                                         [
+                                                             {
+                                                                 "node":  "Append row in sheet",
+                                                                 "type":  "main",
+                                                                 "index":  0
+                                                             }
+                                                         ]
+                                                     ]
+                                        },
+                        "Append row in sheet":  {
+                                                    "main":  [
+                                                                 [
+                                                                     {
+                                                                         "node":  "AI Agent",
+                                                                         "type":  "main",
+                                                                         "index":  0
+                                                                     }
+                                                                 ]
+                                                             ]
+                                                },
+                        "Append or update row in sheet":  {
+                                                              "main":  [
+                                                                           [
+                                                                               {
+                                                                                   "node":  "Send a message",
+                                                                                   "type":  "main",
+                                                                                   "index":  0
+                                                                               }
+                                                                           ]
+                                                                       ]
+                                                          },
+                        "Structured Output Parser":  {
+                                                         "ai_outputParser":  [
+                                                                                 [
+                                                                                     {
+                                                                                         "node":  "AI Agent",
+                                                                                         "type":  "ai_outputParser",
+                                                                                         "index":  0
+                                                                                     }
+                                                                                 ]
+                                                                             ]
+                                                     },
+                        "Send a text message":  {
+                                                    "main":  [
+                                                                 [
+                                                                     {
+                                                                         "node":  "Merge",
+                                                                         "type":  "main",
+                                                                         "index":  0
+                                                                     }
+                                                                 ]
+                                                             ]
+                                                },
+                        "Merge":  {
+                                      "main":  [
+                                                   [
+                                                       {
+                                                           "node":  "Upload file",
+                                                           "type":  "main",
+                                                           "index":  0
+                                                       }
+                                                   ]
+                                               ]
+                                  },
+                        "Ollama Chat Model":  {
+                                                  "ai_languageModel":  [
+                                                                           [
+                                                                               {
+                                                                                   "node":  "AI Agent",
+                                                                                   "type":  "ai_languageModel",
+                                                                                   "index":  0
+                                                                               }
+                                                                           ]
+                                                                       ]
+                                              },
+                        "Google Gemini Chat Model":  {
+                                                         "ai_languageModel":  [
+                                                                                  [
+                                                                                      {
+                                                                                          "node":  "AI Agent",
+                                                                                          "type":  "ai_languageModel",
+                                                                                          "index":  1
+                                                                                      }
+                                                                                  ]
+                                                                              ]
+                                                     }
+                    },
+    "nodes":  [
+                  {
+                      "parameters":  {
+                                         "formTitle":  "Анкета кандидата",
+                                         "formDescription":  "Данная форма предназначена для будущих кандидатов. Пожалуйста, убедитесь, что вся предоставленная вами информация является правдивой, точной и соответствует действительности.",
+                                         "formFields":  {
+                                                            "values":  [
+                                                                           {
+                                                                               "fieldLabel":  "ФИО",
+                                                                               "placeholder":  "Джон Адамс",
+                                                                               "requiredField":  true
+                                                                           },
+                                                                           {
+                                                                               "fieldLabel":  "Электронная почта",
+                                                                               "fieldType":  "email",
+                                                                               "placeholder":  "name@mail.ru",
+                                                                               "requiredField":  true
+                                                                           },
+                                                                           {
+                                                                               "fieldLabel":  "Должность",
+                                                                               "placeholder":  "Разработчик",
+                                                                               "requiredField":  true
+                                                                           },
+                                                                           {
+                                                                               "fieldLabel":  "Опыт работы (лет)",
+                                                                               "fieldType":  "number",
+                                                                               "placeholder":  "1, 2 или 1.5",
+                                                                               "requiredField":  true
+                                                                           },
+                                                                           {
+                                                                               "fieldLabel":  "Навыки",
+                                                                               "placeholder":  "Программирование, аналитика и т.д.",
+                                                                               "requiredField":  true
+                                                                           },
+                                                                           {
+                                                                               "fieldLabel":  "Рабочий стэк (инструменты)",
+                                                                               "placeholder":  "Make, Zapier, n8n",
+                                                                               "requiredField":  true
+                                                                           },
+                                                                           {
+                                                                               "fieldLabel":  "Уровень английского языка",
+                                                                               "fieldType":  "dropdown",
+                                                                               "fieldOptions":  {
+                                                                                                    "values":  [
+                                                                                                                   {
+                                                                                                                       "option":  "A1"
+                                                                                                                   },
+                                                                                                                   {
+                                                                                                                       "option":  "A2"
+                                                                                                                   },
+                                                                                                                   {
+                                                                                                                       "option":  "B1"
+                                                                                                                   },
+                                                                                                                   {
+                                                                                                                       "option":  "B2"
+                                                                                                                   },
+                                                                                                                   {
+                                                                                                                       "option":  "C1"
+                                                                                                                   },
+                                                                                                                   {
+                                                                                                                       "option":  "C2"
+                                                                                                                   }
+                                                                                                               ]
+                                                                                                },
+                                                                               "requiredField":  true
+                                                                           },
+                                                                           {
+                                                                               "fieldLabel":  "Резюме",
+                                                                               "fieldType":  "file",
+                                                                               "multipleFiles":  false,
+                                                                               "acceptFileTypes":  "png, jpg, pdf, doc",
+                                                                               "requiredField":  true
+                                                                           },
+                                                                           {
+                                                                               "fieldLabel":  "Ожидаемая заработная плата (в $)",
+                                                                               "fieldType":  "number",
+                                                                               "placeholder":  "1000",
+                                                                               "requiredField":  true
+                                                                           },
+                                                                           {
+                                                                               "fieldLabel":  "Готовность к работе (дата)",
+                                                                               "fieldType":  "date",
+                                                                               "requiredField":  true
+                                                                           },
+                                                                           {
+                                                                               "fieldName":  "tg_chat_id",
+                                                                               "fieldType":  "hiddenField",
+                                                                               "fieldValue":  "=={{ $request.query.tg_chat_id ?? \u0027\u0027 }}\n"
+                                                                           },
+                                                                           {
+                                                                               "fieldName":  "vac",
+                                                                               "fieldType":  "hiddenField",
+                                                                               "fieldValue":  "=={{ $request.query.vac ?? \u0027\u0027 }}\n"
+                                                                           }
+                                                                       ]
+                                                        },
+                                         "options":  {
+                                                         "buttonLabel":  "Отправить"
+                                                     }
+                                     },
+                      "type":  "n8n-nodes-base.formTrigger",
+                      "typeVersion":  2.3,
+                      "position":  [
+                                       -128,
+                                       64
+                                   ],
+                      "id":  "0989bdd4-dd1b-4d49-9a06-682f4c942cf7",
+                      "name":  "On form submission",
+                      "webhookId":  "5d577de2-814e-4c23-aacd-29fe494894ed",
+                      "alwaysOutputData":  true
+                  },
+                  {
+                      "parameters":  {
+                                         "promptType":  "define",
+                                         "text":  "={{ $json[\u0027ФИО\u0027] }} - имя кандидата\n\n{{ $json[\u0027Электронная почта\u0027] }} - электронная почта кандидата\n\n{{ $json[\u0027Должность\u0027] }} - должность кандидата\n\n{{ $json[\u0027Опыт работы (лет)\u0027] }}- опыт работы кандидата\n\n{{ $json[\u0027Навыки\u0027] }} - навыки кандидата\n\n{{ $json[\u0027Рабочий стэк (инструменты)\u0027] }} - используемые инструменты кандидата\n\n{{ $json[\u0027Уровень английского языка\u0027] }} - уровень владения английским языком кандидата\n\n{{ $json[\u0027Ожидаемая заработная плата (в $)\u0027] }} - ожидаемая заработная плата кандидата\n\n{{ $json[\u0027Готовность к работе (дата)\u0027] }} - готовность к работе, дата начала работы\n\n",
+                                         "hasOutputParser":  true,
+                                         "needsFallback":  true,
+                                         "options":  {
+                                                         "systemMessage":  "=# Роль\nТы — HR-бот для отбора кандидатов на позицию Low/No-code разработчик.\n\n# Что нужно сделать\nНа основе данных кандидата рассчитай и верни ТОЛЬКО JSON с тремя полями:\n- \"Баллы\" (целое число 0–100)\n- \"Соответствие\" (строго одно из: \"Подходит\", \"Частично подходит\", \"Не подходит\")\n- \"Заключение ИИ\" (80–100 слов, 1 абзац, русский язык)\n\n# Правила оценки\n- Чем больше опыта/навыков/инструментов (особенно low-code: n8n/Make/Zapier/Airtable/Notion/Sheets/Apps Script/API/SQL/CRM), тем выше балл.\n- Английский выше → плюс.\n- Зарплата:\n  - $500–1000 → плюс\n  - \u003e $1000 → минус\n- Готовность к работе:\n  - дата \u003c= 15.01.2026 → плюс\n  - позже → минус\n\n# Правило соответствия\n- Баллы \u003c 50 → \"Не подходит\"\n- Баллы 50–79 → \"Частично подходит\"\n- Баллы 80–100 → \"Подходит\"\n\n# Формат ответа (КРИТИЧЕСКИ ВАЖНО)\nВерни ТОЛЬКО один JSON-объект без текста до/после. Пример:\n\n{\"Баллы\": 72, \"Соответствие\": \"Частично подходит\", \"Заключение ИИ\": \"...\"}\n\nНикаких дополнительных ключей. Никаких комментариев. Никаких markdown-блоков.\n"
+                                                     }
+                                     },
+                      "type":  "@n8n/n8n-nodes-langchain.agent",
+                      "typeVersion":  3,
+                      "position":  [
+                                       1024,
+                                       64
+                                   ],
+                      "id":  "5c695d00-b3ee-4ff8-a6f4-5332d42aa2c3",
+                      "name":  "AI Agent",
+                      "alwaysOutputData":  true
+                  },
+                  {
+                      "parameters":  {
+                                         "inputDataFieldName":  "=______",
+                                         "name":  "={{ $(\u0027On form submission\u0027).item.json[\u0027Резюме\u0027].filename }}",
+                                         "driveId":  {
+                                                         "__rl":  true,
+                                                         "mode":  "list",
+                                                         "value":  "My Drive"
+                                                     },
+                                         "folderId":  {
+                                                          "__rl":  true,
+                                                          "value":  "14T6RydEoPMDbkFwdvZXcxeilIzHQj-vQ",
+                                                          "mode":  "list",
+                                                          "cachedResultName":  "EPAM Study",
+                                                          "cachedResultUrl":  "https://drive.google.com/drive/folders/14T6RydEoPMDbkFwdvZXcxeilIzHQj-vQ"
+                                                      },
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "type":  "n8n-nodes-base.googleDrive",
+                      "typeVersion":  3,
+                      "position":  [
+                                       592,
+                                       64
+                                   ],
+                      "id":  "4c693c48-4fce-433d-a6fd-3c40002fba36",
+                      "name":  "Upload file",
+                      "alwaysOutputData":  true,
+                      "credentials":  null
+                  },
+                  {
+                      "parameters":  {
+                                         "sendTo":  "rasittalgat@gmail.com",
+                                         "subject":  "Добавлен новый кандидат",
+                                         "message":  "=\u003cp\u003eУважаемый HR,\u003c/p\u003e\n\n\u003cp\u003eКандидат \u003cstrong\u003e{{ $(\u0027Append row in sheet\u0027).item.json[\u0027ФИО\u0027] }}\u003c/strong\u003e добавлен в список.\u003c/p\u003e\n\n\n\u003cp\u003e\n  Можете проверить его, перейдя по ссылке:\n  \u003ca href=\"https://docs.google.com/spreadsheets/d/1hUkuSu8mUWSf45AVSOj3bO26j-I9d5F0XahJQT-tHZU/edit?gid=0#gid=0\"\u003eOpen Candidates Sheet\u003c/a\u003e\n\u003c/p\u003e\n\n\u003cp\u003eХорошего вам дня!\u003c/p\u003e\n\n\u003chr\u003e\n\u003cp style=\"color:#666;font-size:12px;\"\u003eThis email was sent automatically with n8n.\u003c/p\u003e\n",
+                                         "options":  {
+                                                         "appendAttribution":  false
+                                                     }
+                                     },
+                      "type":  "n8n-nodes-base.gmail",
+                      "typeVersion":  2.1,
+                      "position":  [
+                                       1696,
+                                       64
+                                   ],
+                      "id":  "6b525492-9055-4824-b324-1fed8e801137",
+                      "name":  "Send a message",
+                      "webhookId":  "b280042e-f91c-4221-a482-e5ea77968b78",
+                      "credentials":  null
+                  },
+                  {
+                      "parameters":  {
+                                         "operation":  "append",
+                                         "documentId":  {
+                                                            "__rl":  true,
+                                                            "value":  "1hUkuSu8mUWSf45AVSOj3bO26j-I9d5F0XahJQT-tHZU",
+                                                            "mode":  "list",
+                                                            "cachedResultName":  "Candidates spreadsheet",
+                                                            "cachedResultUrl":  "https://docs.google.com/spreadsheets/d/1hUkuSu8mUWSf45AVSOj3bO26j-I9d5F0XahJQT-tHZU/edit?usp=drivesdk"
+                                                        },
+                                         "sheetName":  {
+                                                           "__rl":  true,
+                                                           "value":  1316379091,
+                                                           "mode":  "list",
+                                                           "cachedResultName":  "Кандидаты",
+                                                           "cachedResultUrl":  "https://docs.google.com/spreadsheets/d/1hUkuSu8mUWSf45AVSOj3bO26j-I9d5F0XahJQT-tHZU/edit#gid=1316379091"
+                                                       },
+                                         "columns":  {
+                                                         "mappingMode":  "defineBelow",
+                                                         "value":  {
+                                                                       "Timestamp":  "={{ $(\u0027On form submission\u0027).item.json.submittedAt }}",
+                                                                       "ФИО":  "={{ $(\u0027On form submission\u0027).item.json[\u0027ФИО\u0027] }}",
+                                                                       "Электронная почта":  "={{ $(\u0027On form submission\u0027).item.json[\u0027Электронная почта\u0027] }}",
+                                                                       "Должность":  "={{ $(\u0027On form submission\u0027).item.json[\u0027Должность\u0027] }}",
+                                                                       "Опыт работы (лет)":  "={{ $(\u0027On form submission\u0027).item.json[\u0027Опыт работы (лет)\u0027] }}",
+                                                                       "Навыки":  "={{ $(\u0027On form submission\u0027).item.json[\u0027Навыки\u0027] }}",
+                                                                       "Рабочий стэк (инструменты)":  "={{ $(\u0027On form submission\u0027).item.json[\u0027Рабочий стэк (инструменты)\u0027] }}",
+                                                                       "Уровень английского языка":  "={{ $(\u0027On form submission\u0027).item.json[\u0027Уровень английского языка\u0027] }}",
+                                                                       "Резюме":  "={{ $json.webViewLink }}",
+                                                                       "Ожидаемая заработная плата (в $)":  "={{ $(\u0027On form submission\u0027).item.json[\u0027Ожидаемая заработная плата (в $)\u0027] }}",
+                                                                       "Готовность к работе (дата)":  "={{ $(\u0027On form submission\u0027).item.json[\u0027Готовность к работе (дата)\u0027] }}"
+                                                                   },
+                                                         "matchingColumns":  [
+                                                                                 "Timestamp"
+                                                                             ],
+                                                         "schema":  [
+                                                                        {
+                                                                            "id":  "Timestamp",
+                                                                            "displayName":  "Timestamp",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true,
+                                                                            "removed":  false
+                                                                        },
+                                                                        {
+                                                                            "id":  "ФИО",
+                                                                            "displayName":  "ФИО",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Электронная почта",
+                                                                            "displayName":  "Электронная почта",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Должность",
+                                                                            "displayName":  "Должность",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Опыт работы (лет)",
+                                                                            "displayName":  "Опыт работы (лет)",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Навыки",
+                                                                            "displayName":  "Навыки",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Рабочий стэк (инструменты)",
+                                                                            "displayName":  "Рабочий стэк (инструменты)",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Уровень английского языка",
+                                                                            "displayName":  "Уровень английского языка",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Резюме",
+                                                                            "displayName":  "Резюме",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Ожидаемая заработная плата (в $)",
+                                                                            "displayName":  "Ожидаемая заработная плата (в $)",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Готовность к работе (дата)",
+                                                                            "displayName":  "Готовность к работе (дата)",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Баллы",
+                                                                            "displayName":  "Баллы",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Соответствие",
+                                                                            "displayName":  "Соответствие",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Заключение ИИ",
+                                                                            "displayName":  "Заключение ИИ",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true,
+                                                                            "removed":  false
+                                                                        }
+                                                                    ],
+                                                         "attemptToConvertTypes":  false,
+                                                         "convertFieldsToString":  false
+                                                     },
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "type":  "n8n-nodes-base.googleSheets",
+                      "typeVersion":  4.7,
+                      "position":  [
+                                       800,
+                                       64
+                                   ],
+                      "id":  "74edb6e2-a14a-4dc9-9b50-e87f029f5024",
+                      "name":  "Append row in sheet",
+                      "credentials":  null
+                  },
+                  {
+                      "parameters":  {
+                                         "operation":  "appendOrUpdate",
+                                         "documentId":  {
+                                                            "__rl":  true,
+                                                            "value":  "1hUkuSu8mUWSf45AVSOj3bO26j-I9d5F0XahJQT-tHZU",
+                                                            "mode":  "list",
+                                                            "cachedResultName":  "Candidates spreadsheet",
+                                                            "cachedResultUrl":  "https://docs.google.com/spreadsheets/d/1hUkuSu8mUWSf45AVSOj3bO26j-I9d5F0XahJQT-tHZU/edit?usp=drivesdk"
+                                                        },
+                                         "sheetName":  {
+                                                           "__rl":  true,
+                                                           "value":  1316379091,
+                                                           "mode":  "list",
+                                                           "cachedResultName":  "Кандидаты",
+                                                           "cachedResultUrl":  "https://docs.google.com/spreadsheets/d/1hUkuSu8mUWSf45AVSOj3bO26j-I9d5F0XahJQT-tHZU/edit#gid=1316379091"
+                                                       },
+                                         "columns":  {
+                                                         "mappingMode":  "defineBelow",
+                                                         "value":  {
+                                                                       "Timestamp":  "={{ $(\u0027Append row in sheet\u0027).item.json.Timestamp }}",
+                                                                       "ФИО":  "={{ $(\u0027Append row in sheet\u0027).item.json[\u0027ФИО\u0027] }}",
+                                                                       "Должность":  "={{ $(\u0027Append row in sheet\u0027).item.json[\u0027Должность\u0027] }}",
+                                                                       "Электронная почта":  "={{ $(\u0027Append row in sheet\u0027).item.json[\u0027Электронная почта\u0027] }}",
+                                                                       "Опыт работы (лет)":  "={{ $(\u0027Append row in sheet\u0027).item.json[\u0027Опыт работы (лет)\u0027] }}",
+                                                                       "Навыки":  "={{ $(\u0027Append row in sheet\u0027).item.json[\u0027Навыки\u0027] }}",
+                                                                       "Рабочий стэк (инструменты)":  "={{ $(\u0027Append row in sheet\u0027).item.json[\u0027Рабочий стэк (инструменты)\u0027] }}",
+                                                                       "Уровень английского языка":  "={{ $(\u0027Append row in sheet\u0027).item.json[\u0027Уровень английского языка\u0027] }}",
+                                                                       "Резюме":  "={{ $(\u0027Upload file\u0027).item.json.webViewLink }}",
+                                                                       "Ожидаемая заработная плата (в $)":  "={{ $(\u0027Append row in sheet\u0027).item.json[\u0027Ожидаемая заработная плата (в $)\u0027] }}",
+                                                                       "Готовность к работе (дата)":  "={{ $(\u0027Append row in sheet\u0027).item.json[\u0027Готовность к работе (дата)\u0027] }}",
+                                                                       "Баллы":  "={{ $json.output[\u0027Баллы\u0027] }}",
+                                                                       "Соответствие":  "={{ $json.output[\u0027Соответствие\u0027] }}",
+                                                                       "Заключение ИИ":  "={{ $json.output[\u0027Заключение ИИ\u0027] }}"
+                                                                   },
+                                                         "matchingColumns":  [
+                                                                                 "Timestamp"
+                                                                             ],
+                                                         "schema":  [
+                                                                        {
+                                                                            "id":  "Timestamp",
+                                                                            "displayName":  "Timestamp",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true,
+                                                                            "removed":  false
+                                                                        },
+                                                                        {
+                                                                            "id":  "ФИО",
+                                                                            "displayName":  "ФИО",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Электронная почта",
+                                                                            "displayName":  "Электронная почта",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Должность",
+                                                                            "displayName":  "Должность",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Опыт работы (лет)",
+                                                                            "displayName":  "Опыт работы (лет)",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Навыки",
+                                                                            "displayName":  "Навыки",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Рабочий стэк (инструменты)",
+                                                                            "displayName":  "Рабочий стэк (инструменты)",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Уровень английского языка",
+                                                                            "displayName":  "Уровень английского языка",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Резюме",
+                                                                            "displayName":  "Резюме",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Ожидаемая заработная плата (в $)",
+                                                                            "displayName":  "Ожидаемая заработная плата (в $)",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Готовность к работе (дата)",
+                                                                            "displayName":  "Готовность к работе (дата)",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Баллы",
+                                                                            "displayName":  "Баллы",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Соответствие",
+                                                                            "displayName":  "Соответствие",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        },
+                                                                        {
+                                                                            "id":  "Заключение ИИ",
+                                                                            "displayName":  "Заключение ИИ",
+                                                                            "required":  false,
+                                                                            "defaultMatch":  false,
+                                                                            "display":  true,
+                                                                            "type":  "string",
+                                                                            "canBeUsedToMatch":  true
+                                                                        }
+                                                                    ],
+                                                         "attemptToConvertTypes":  false,
+                                                         "convertFieldsToString":  false
+                                                     },
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "type":  "n8n-nodes-base.googleSheets",
+                      "typeVersion":  4.7,
+                      "position":  [
+                                       1408,
+                                       64
+                                   ],
+                      "id":  "65b95a30-d7e9-4f11-9f78-374d27a5bdb4",
+                      "name":  "Append or update row in sheet",
+                      "credentials":  null
+                  },
+                  {
+                      "parameters":  {
+                                         "chatId":  "={{ $json.tg_chat_id }}",
+                                         "text":  "✅ Спасибо! Анкета получена. Мы свяжемся с вами после первичного рассмотрения.",
+                                         "additionalFields":  {
+                                                                  "appendAttribution":  false,
+                                                                  "parse_mode":  "HTML"
+                                                              }
+                                     },
+                      "type":  "n8n-nodes-base.telegram",
+                      "typeVersion":  1.2,
+                      "position":  [
+                                       208,
+                                       -112
+                                   ],
+                      "id":  "567bdfdd-3d93-40ec-9bcc-460295b237ad",
+                      "name":  "Send a text message",
+                      "webhookId":  "dbab9240-da17-4705-b4ee-b647cb385ef8",
+                      "alwaysOutputData":  true,
+                      "credentials":  null
+                  },
+                  {
+                      "parameters":  {
+                                         "schemaType":  "manual",
+                                         "inputSchema":  "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"Баллы\": { \"type\": \"integer\", \"minimum\": 0, \"maximum\": 100 },\n    \"Соответствие\": { \"type\": \"string\", \"enum\": [\"Подходит\", \"Частично подходит\", \"Не подходит\"] },\n    \"Заключение ИИ\": { \"type\": \"string\" }\n  },\n  \"required\": [\"Баллы\", \"Соответствие\", \"Заключение ИИ\"],\n  \"additionalProperties\": false\n}\n"
+                                     },
+                      "type":  "@n8n/n8n-nodes-langchain.outputParserStructured",
+                      "typeVersion":  1.3,
+                      "position":  [
+                                       1248,
+                                       320
+                                   ],
+                      "id":  "4d03dfb3-5b17-4fe7-81a7-7c679d118ec2",
+                      "name":  "Structured Output Parser"
+                  },
+                  {
+                      "parameters":  {
+                                         "mode":  "chooseBranch",
+                                         "useDataOfInput":  2
+                                     },
+                      "type":  "n8n-nodes-base.merge",
+                      "typeVersion":  3.2,
+                      "position":  [
+                                       400,
+                                       64
+                                   ],
+                      "id":  "9979c44c-a8d0-47c3-a8cf-2533401fcb61",
+                      "name":  "Merge"
+                  },
+                  {
+                      "parameters":  {
+                                         "model":  "gpt-oss:20b",
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "type":  "@n8n/n8n-nodes-langchain.lmChatOllama",
+                      "typeVersion":  1,
+                      "position":  [
+                                       656,
+                                       288
+                                   ],
+                      "id":  "bf9aaa26-1262-4258-b540-588a86c46764",
+                      "name":  "Ollama Chat Model",
+                      "credentials":  null
+                  },
+                  {
+                      "parameters":  {
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "type":  "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+                      "typeVersion":  1,
+                      "position":  [
+                                       880,
+                                       304
+                                   ],
+                      "id":  "4b838a11-842b-447c-b104-f295cd88f904",
+                      "name":  "Google Gemini Chat Model",
+                      "credentials":  null
+                  }
+              ]
+}

@@ -1,0 +1,266 @@
+﻿{
+    "settings":  {
+                     "executionOrder":  "v1",
+                     "binaryMode":  "separate",
+                     "availableInMCP":  false
+                 },
+    "tags":  [
+
+             ],
+    "name":  "Telegram_HR_bot",
+    "connections":  {
+                        "Telegram Trigger":  {
+                                                 "main":  [
+                                                              [
+                                                                  {
+                                                                      "node":  "If",
+                                                                      "type":  "main",
+                                                                      "index":  0
+                                                                  }
+                                                              ]
+                                                          ]
+                                             },
+                        "If":  {
+                                   "main":  [
+                                                [
+                                                    {
+                                                        "node":  "Build Form URL",
+                                                        "type":  "main",
+                                                        "index":  0
+                                                    }
+                                                ],
+                                                [
+                                                    {
+                                                        "node":  "If1",
+                                                        "type":  "main",
+                                                        "index":  0
+                                                    }
+                                                ]
+                                            ]
+                               },
+                        "If1":  {
+                                    "main":  [
+                                                 [
+                                                     {
+                                                         "node":  "Send a text message",
+                                                         "type":  "main",
+                                                         "index":  0
+                                                     }
+                                                 ]
+                                             ]
+                                },
+                        "Build Form URL":  {
+                                               "main":  [
+                                                            [
+                                                                {
+                                                                    "node":  "Send a text message1",
+                                                                    "type":  "main",
+                                                                    "index":  0
+                                                                }
+                                                            ]
+                                                        ]
+                                           }
+                    },
+    "nodes":  [
+                  {
+                      "parameters":  {
+                                         "updates":  [
+                                                         "message",
+                                                         "callback_query",
+                                                         "*"
+                                                     ],
+                                         "additionalFields":  {
+
+                                                              }
+                                     },
+                      "type":  "n8n-nodes-base.telegramTrigger",
+                      "typeVersion":  1.2,
+                      "position":  [
+                                       -752,
+                                       128
+                                   ],
+                      "id":  "2bc450ae-c0b3-417a-b3d2-5a06f81851f9",
+                      "name":  "Telegram Trigger",
+                      "webhookId":  "0215989b-c839-4c89-be08-d51f2bb9f3a9",
+                      "alwaysOutputData":  true,
+                      "credentials":  null
+                  },
+                  {
+                      "parameters":  {
+                                         "chatId":  "={{ $(\u0027Telegram Trigger\u0027).item.json.message.chat.id }}",
+                                         "text":  "=Уважаемый соискатель🧑‍💻👋!\n\nПриветствуем Вас в нашей системе подбора персонала.\nМы рады предложить Вам ознакомиться с тремя вариантами вакансий, представленных ниже. Пожалуйста, выберите наиболее подходящий для Вас.",
+                                         "replyMarkup":  "inlineKeyboard",
+                                         "inlineKeyboard":  {
+                                                                "rows":  [
+                                                                             {
+                                                                                 "row":  {
+                                                                                             "buttons":  [
+                                                                                                             {
+                                                                                                                 "text":  "=⚙️ Low/No-code разработчик",
+                                                                                                                 "additionalFields":  {
+                                                                                                                                          "callback_data":  "vac_lowcode"
+                                                                                                                                      }
+                                                                                                             }
+                                                                                                         ]
+                                                                                         }
+                                                                             },
+                                                                             {
+                                                                                 "row":  {
+                                                                                             "buttons":  [
+                                                                                                             {
+                                                                                                                 "text":  "📊 Аналитик",
+                                                                                                                 "additionalFields":  {
+                                                                                                                                          "callback_data":  "vac_analyst"
+                                                                                                                                      }
+                                                                                                             }
+                                                                                                         ]
+                                                                                         }
+                                                                             },
+                                                                             {
+                                                                                 "row":  {
+                                                                                             "buttons":  [
+                                                                                                             {
+                                                                                                                 "text":  "💻 Backend разработчик",
+                                                                                                                 "additionalFields":  {
+                                                                                                                                          "callback_data":  "vac_backend"
+                                                                                                                                      }
+                                                                                                             }
+                                                                                                         ]
+                                                                                         }
+                                                                             }
+                                                                         ]
+                                                            },
+                                         "additionalFields":  {
+                                                                  "appendAttribution":  false
+                                                              }
+                                     },
+                      "type":  "n8n-nodes-base.telegram",
+                      "typeVersion":  1.2,
+                      "position":  [
+                                       0,
+                                       208
+                                   ],
+                      "id":  "26332e44-4860-40fd-9b3c-554dc269a077",
+                      "name":  "Send a text message",
+                      "webhookId":  "329122dd-db21-42fb-9278-ebfe79b2c5ea",
+                      "credentials":  null
+                  },
+                  {
+                      "parameters":  {
+                                         "conditions":  {
+                                                            "options":  {
+                                                                            "caseSensitive":  true,
+                                                                            "leftValue":  "",
+                                                                            "typeValidation":  "strict",
+                                                                            "version":  3
+                                                                        },
+                                                            "conditions":  [
+                                                                               {
+                                                                                   "id":  "49ea901e-7cb4-4825-b1f3-30e88f7e0936",
+                                                                                   "leftValue":  "={{ $json.callback_query?.data }}",
+                                                                                   "rightValue":  "",
+                                                                                   "operator":  {
+                                                                                                    "type":  "string",
+                                                                                                    "operation":  "notEmpty",
+                                                                                                    "singleValue":  true
+                                                                                                }
+                                                                               }
+                                                                           ],
+                                                            "combinator":  "and"
+                                                        },
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "type":  "n8n-nodes-base.if",
+                      "typeVersion":  2.3,
+                      "position":  [
+                                       -528,
+                                       128
+                                   ],
+                      "id":  "5e943110-26f9-496a-a872-133342a3ed44",
+                      "name":  "If"
+                  },
+                  {
+                      "parameters":  {
+                                         "conditions":  {
+                                                            "options":  {
+                                                                            "caseSensitive":  true,
+                                                                            "leftValue":  "",
+                                                                            "typeValidation":  "strict",
+                                                                            "version":  3
+                                                                        },
+                                                            "conditions":  [
+                                                                               {
+                                                                                   "id":  "e810ab64-4496-4352-9646-91d15dfcf87a",
+                                                                                   "leftValue":  "={{ $json.message?.text }}",
+                                                                                   "rightValue":  "/start",
+                                                                                   "operator":  {
+                                                                                                    "type":  "string",
+                                                                                                    "operation":  "equals",
+                                                                                                    "name":  "filter.operator.equals"
+                                                                                                }
+                                                                               }
+                                                                           ],
+                                                            "combinator":  "and"
+                                                        },
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "type":  "n8n-nodes-base.if",
+                      "typeVersion":  2.3,
+                      "position":  [
+                                       -288,
+                                       256
+                                   ],
+                      "id":  "58586d9f-2d2c-40c9-82fe-5a359274ed10",
+                      "name":  "If1"
+                  },
+                  {
+                      "parameters":  {
+                                         "assignments":  {
+                                                             "assignments":  [
+                                                                                 {
+                                                                                     "id":  "06a1fc8a-b83b-43d5-b9da-f36db96c62f1",
+                                                                                     "name":  "formUrl",
+                                                                                     "value":  "={{\n  \u0027https://n8n.sheshimai.cloud/form/5d577de2-814e-4c23-aacd-29fe494894ed\u0027 \n  + \u0027?tg_chat_id=\u0027 + $json.callback_query.message.chat.id\n  + \u0027\u0026vac=\u0027 + $json.callback_query.data\n}}\n\n\n\n\n",
+                                                                                     "type":  "string"
+                                                                                 }
+                                                                             ]
+                                                         },
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "type":  "n8n-nodes-base.set",
+                      "typeVersion":  3.4,
+                      "position":  [
+                                       -288,
+                                       48
+                                   ],
+                      "id":  "4f6c7565-45d6-466b-8efd-8224c0a49589",
+                      "name":  "Build Form URL"
+                  },
+                  {
+                      "parameters":  {
+                                         "chatId":  "={{ $(\u0027Telegram Trigger\u0027).item.json.callback_query.message.chat.id }}",
+                                         "text":  "=✅ Отлично! Вы выбрали вакансию {{ $(\u0027Telegram Trigger\u0027).item.json.callback_query.message.reply_markup.inline_keyboard[0][0].text }}.  Заполните анкету по ссылке: {{$json.formUrl}}  \n\nПосле отправки анкеты дождитесь сообщения с подтверждением.",
+                                         "additionalFields":  {
+                                                                  "appendAttribution":  false,
+                                                                  "parse_mode":  "HTML"
+                                                              }
+                                     },
+                      "type":  "n8n-nodes-base.telegram",
+                      "typeVersion":  1.2,
+                      "position":  [
+                                       0,
+                                       0
+                                   ],
+                      "id":  "812481a8-0e95-4428-8e71-aaafc460cc3a",
+                      "name":  "Send a text message1",
+                      "webhookId":  "4bbc6c37-49bd-419d-b0d4-45a770226025",
+                      "credentials":  null
+                  }
+              ]
+}
